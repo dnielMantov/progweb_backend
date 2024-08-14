@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    container_name: postgres-sql
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+		POSTGRES_USER: dniel
+      	POSTGRES_PASSWORD: 12345
+    ports:
+      - 5432:5432
+    logging:
+      driver: json-file
+      options:
+        max-size: 100m
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - 80:80
+    depends_on:
+      - db
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  pgdata:
+  pgadmin_data:

@@ -13,45 +13,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id                 Int         @id @default(autoincrement())
-  nome               String
-  email              String      @unique
-  posts              Post[]
-  comentarios        Comentario[]
-  postsCurtidos      PostCurtida[]
+  id                  Int                 @id @default(autoincrement())
+  nome                String
+  email               String              @unique
+  posts               Post[]
+  comentarios         Comentario[]
+  postsCurtidos       PostCurtida[]
   comentariosCurtidos ComentarioCurtida[]
 }
 
 model Post {
-  id          Int         @id @default(autoincrement())
-  titulo      String
-  conteudo    String
-  userCreator User        @relation(fields: [userCreatorId], references: [id])
-  userCreatorId Int
-  comentarios Comentario[]
-  curtidas    PostCurtida[]
+  id             Int             @id @default(autoincrement())
+  titulo         String
+  conteudo       String
+  userCreator    User            @relation(fields: [userCreatorId], references: [id])
+  userCreatorId  Int
+  comentarios    Comentario[]
+  curtidas       PostCurtida[]
   administrators Administrator[] @relation("AdministratorPosts")
 }
 
 model Comentario {
-  id              Int         @id @default(autoincrement())
-  conteudo        String
-  userCreator     User        @relation(fields: [userCreatorId], references: [id])
-  userCreatorId   Int
-  curtidas        ComentarioCurtida[]
-  comentarioPai   Comentario? @relation("ComentarioPai", fields: [comentarioPaiId], references: [id])
-  comentarioPaiId Int?
-  comentariosFilhos Comentario[] @relation("ComentarioPai")
-  administrators  Administrator[] @relation("AdministratorComentarios")
+  id                Int                 @id @default(autoincrement())
+  conteudo          String
+  userCreator       User                @relation(fields: [userCreatorId], references: [id])
+  userCreatorId     Int
+  curtidas          ComentarioCurtida[]
+  comentarioPai     Comentario?         @relation("ComentarioPai", fields: [comentarioPaiId], references: [id])
+  comentarioPaiId   Int?
+  comentariosFilhos Comentario[]        @relation("ComentarioPai")
+  administrators    Administrator[]     @relation("AdministratorComentarios")
+  Post              Post?               @relation(fields: [postId], references: [id])
+  postId            Int?
 }
 
 model Administrator {
-  id          Int         @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   nome        String
-  email       String      @unique
-  posts       Post[]      @relation("AdministratorPosts")
+  email       String       @unique
+  posts       Post[]       @relation("AdministratorPosts")
   comentarios Comentario[] @relation("AdministratorComentarios")
 }
 
